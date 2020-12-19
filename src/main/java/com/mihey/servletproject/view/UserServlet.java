@@ -36,7 +36,6 @@ public class UserServlet extends HttpServlet {
         user.setRegion(region);
         user.setRole(Role.USER);
         userController.saveUser(user);
-        System.out.println(user);
     }
 
     @Override
