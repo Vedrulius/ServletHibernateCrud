@@ -3,8 +3,8 @@ package com.mihey.servletproject.repository.hibernate;
 import com.mihey.servletproject.model.User;
 import com.mihey.servletproject.repository.UserRepository;
 import com.mihey.servletproject.util.HibernateUtil;
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import java.util.List;
 

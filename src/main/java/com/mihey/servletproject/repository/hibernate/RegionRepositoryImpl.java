@@ -3,8 +3,8 @@ package com.mihey.servletproject.repository.hibernate;
 import com.mihey.servletproject.model.Region;
 import com.mihey.servletproject.repository.RegionRepository;
 import com.mihey.servletproject.util.HibernateUtil;
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class RegionRepositoryImpl implements RegionRepository {
     @Override
     public List<Region> getAll() {
         session = HibernateUtil.getSession();
-        List<Region> list = session.createQuery("FROM Post", Region.class).list();
+        List<Region> list = session.createQuery("FROM Post").list();
         session.close();
         return list;
     }

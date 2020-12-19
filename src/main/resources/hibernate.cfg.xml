@@ -12,9 +12,9 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format-sql">true</property>
 
-        <mapping class="com.mihey.servletproject.model.User" />
-        <mapping class="com.mihey.servletproject.model.Post" />
-        <mapping class="com.mihey.servletproject.model.Region" />
+        <mapping class="com.mihey.servletproject.model.User"/>
+        <mapping class="com.mihey.servletproject.model.Post"/>
+        <mapping class="com.mihey.servletproject.model.Region"/>
 
     </session-factory>
 </hibernate-configuration>

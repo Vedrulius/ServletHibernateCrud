@@ -3,8 +3,8 @@ package com.mihey.servletproject.repository.hibernate;
 import com.mihey.servletproject.model.Post;
 import com.mihey.servletproject.repository.PostRepository;
 import com.mihey.servletproject.util.HibernateUtil;
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -16,7 +16,7 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> getAll() {
         session = HibernateUtil.getSession();
-        List<Post> posts = session.createQuery("FROM Post", Post.class).list();
+        List<Post> posts = session.createQuery("FROM Post").list();
         session.close();
         return posts;
     }
