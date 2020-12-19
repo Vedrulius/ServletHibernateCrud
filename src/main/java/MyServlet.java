@@ -1,9 +1,6 @@
-package com.mihey.servletproject;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,8 +28,8 @@ public class MyServlet extends HttpServlet {
         pw.println("<h1> Hello people! </h1>");
         pw.println("</html>");
 
-        RequestDispatcher rd = req.getRequestDispatcher("/index.jsp");
-        rd.forward(req,resp);
+//        RequestDispatcher rd = req.getRequestDispatcher("/index.jsp");
+//        rd.forward(req,resp);
     }
 
 //    @Override
