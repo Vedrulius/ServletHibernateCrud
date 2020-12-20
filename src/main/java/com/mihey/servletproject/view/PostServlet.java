@@ -15,9 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/posts"})
+@WebServlet(urlPatterns = {"/posts/create", "/posts/update"/*, "/posts/delete/", "posts/list", "/posts/find"*/})
 public class PostServlet extends HttpServlet {
 
     private PostController postController = new PostController();
@@ -34,10 +35,61 @@ public class PostServlet extends HttpServlet {
         String json = req.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         Post post = g.fromJson(json, Post.class);
-        post.setCreated(new Timestamp(System.currentTimeMillis()));
-        post.setUpdated(new Timestamp(System.currentTimeMillis()));
-        postController.createPost(post);
+        if (path.equals("/posts/create")) {
+            post.setCreated(new Timestamp(System.currentTimeMillis()));
+            post.setUpdated(new Timestamp(System.currentTimeMillis()));
+            postController.createPost(post);
+        }
+        if (path.equals("/posts/update")) {
+            String content = post.getContent();
+            post = postController.getPostsById(post.getId());
+            post.setUpdated(new Timestamp(System.currentTimeMillis()));
+            post.setContent(content);
+            postController.editPost(post);
+        }
+
         System.out.println(post);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getServletPath();
+        switch (path) {
+            case "/delete":
+                deletePost(request, response);
+                break;
+            case "/list":
+                listPosts(request, response);
+                break;
+            case "/find":
+                findPost(request, response);
+                break;
+        }
+    }
+
+    private void deletePost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+
+        postController.deletePostById(id);
+
+    }
+
+    private void listPosts(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        List<Post> list = postController.showAllPosts();
+        response.getWriter().write(list.toString());
+
+    }
+
+    private void findPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        Post post = postController.getPostsById(id);
+        response.getWriter().write(post.toString());
     }
 
     @Override
