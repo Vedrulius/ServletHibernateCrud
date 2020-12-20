@@ -47,7 +47,6 @@ public class UserServlet extends HttpServlet {
             user.setRole(Role.USER);
             userController.editUser(user);
         }
-        response.getWriter().write(user.getFirstName());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

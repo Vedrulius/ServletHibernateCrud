@@ -29,6 +29,8 @@ public class PostServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String path = req.getServletPath();
+        resp.getWriter().write(path);
         String json = req.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         Post post = g.fromJson(json, Post.class);
