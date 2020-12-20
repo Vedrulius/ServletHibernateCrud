@@ -47,6 +47,7 @@ public class UserServlet extends HttpServlet {
             user.setRole(Role.USER);
             userController.editUser(user);
         }
+        response.getWriter().write(user.getFirstName());
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -69,7 +70,9 @@ public class UserServlet extends HttpServlet {
             throws ServletException, IOException {
 
         int id = Integer.parseInt(request.getParameter("id"));
+
         userController.deleteUser(id);
+        response.getWriter().write("user.getFirstName()"+ id);
 
     }
 
@@ -77,6 +80,7 @@ public class UserServlet extends HttpServlet {
             throws ServletException, IOException {
 
         List<User> list = userController.getAllUsers();
+        response.getWriter().write(list.toString());
 
     }
 
@@ -85,6 +89,7 @@ public class UserServlet extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("id"));
         User user = userController.getUserById(id);
+        response.getWriter().write(user.toString());
     }
 
 
