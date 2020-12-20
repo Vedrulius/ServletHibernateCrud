@@ -51,9 +51,39 @@ public class UserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getServletPath();
+        switch (path) {
+            case "/users/delete":
+                deleteUser(request, response);
+                break;
+            case "/users/list":
+                listUsers(request, response);
+                break;
+            case "/users/find":
+                findUser(request, response);
+                break;
+        }
+    }
 
+    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        userController.deleteUser(id);
 
     }
+    private void listUsers(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+       userController.getAllUsers();
+
+    }
+    private void findUser(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        User user = userController.getUserById(id);
+    }
+
 
     @Override
     public void destroy() {
