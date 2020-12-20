@@ -71,7 +71,6 @@ public class UserServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         userController.deleteUser(id);
-        response.getWriter().write("user.getFirstName()"+ id);
 
     }
 
