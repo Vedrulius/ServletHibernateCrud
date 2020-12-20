@@ -34,7 +34,7 @@ public class RegionRepositoryImpl implements RegionRepository {
         if (region1 == null) {
             session = HibernateUtil.getSession();
             session.getTransaction().begin();
-            session.save(region);
+            session.saveOrUpdate(region);
             session.getTransaction().commit();
             session.close();
         } else {
@@ -66,9 +66,11 @@ public class RegionRepositoryImpl implements RegionRepository {
 
     private Region findRegion(Region region) {
         session = HibernateUtil.getSession();
-        Query query = session.createQuery("from Region where name = :name");
-        query.setParameter("name", region.getName().toLowerCase());
-        region = (Region) query.uniqueResult();
+//        Query query = session.createQuery("from Region where name = :name");
+//        query.setParameter("name", region.getName().toLowerCase());
+        region = (Region) session.createQuery("from Region where name = :name")
+                .setParameter("name", region.getName().toLowerCase())
+                .uniqueResult();
         session.close();
         return region;
     }

@@ -16,11 +16,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/users"})
+@WebServlet(urlPatterns = {"/"})
 public class UserServlet extends HttpServlet {
 
     private UserController userController = new UserController();
-    private RegionController regionController=new RegionController();
+    private RegionController regionController = new RegionController();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -28,14 +28,31 @@ public class UserServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String json = req.getReader().lines().collect(Collectors.joining());
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getServletPath();
+        String json = request.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         User user = g.fromJson(json, User.class);
-        Region region = regionController.saveRegion(user.getRegion());
-        user.setRegion(region);
-        user.setRole(Role.USER);
-        userController.saveUser(user);
+        if (path.equals("/users/create")) {
+            Region region = regionController.saveRegion(user.getRegion());
+            user.setRegion(region);
+            user.setRole(Role.USER);
+            userController.saveUser(user);
+        }
+        if (path.equals("/users/update")) {
+            Region region = regionController.saveRegion(user.getRegion());
+            user.setRegion(region);
+            user.setRole(Role.USER);
+            userController.editUser(user);
+        }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String path = request.getServletPath();
+
+
     }
 
     @Override
