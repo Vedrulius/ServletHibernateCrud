@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/posts/create", "/posts/update"/*, "/posts/delete/", "posts/list", "/posts/find"*/})
+@WebServlet(urlPatterns = {"/posts/create", "/posts/update", "/posts/delete", "/posts/list", "/posts/find"})
 public class PostServlet extends HttpServlet {
 
     private PostController postController = new PostController();
@@ -31,7 +31,6 @@ public class PostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getServletPath();
-        resp.getWriter().write(path);
         String json = req.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         Post post = g.fromJson(json, Post.class);
@@ -47,21 +46,20 @@ public class PostServlet extends HttpServlet {
             post.setContent(content);
             postController.editPost(post);
         }
-
-        System.out.println(post);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getServletPath();
+        response.getWriter().write(path);
         switch (path) {
-            case "/delete":
+            case "/posts/delete":
                 deletePost(request, response);
                 break;
-            case "/list":
+            case "/posts/list":
                 listPosts(request, response);
                 break;
-            case "/find":
+            case "/posts/find":
                 findPost(request, response);
                 break;
         }
