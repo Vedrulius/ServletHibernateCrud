@@ -16,4 +16,9 @@ Run Project:
      2.1) $mvn clean install
      2.2) $mvn flyway:migrate
      2.3) $java -jar HibernateCrudConsole-1.0-SNAPSHOT-jar-with-dependencies.jar
+     
+3)  To get data from a server the client sends the GET or POST request to 
+    http://localhost:8080/post-service/users(posts or regions) with:
+    create, update, list, delete(with parameter id, ?id=...) or find(with parameter id, ?id=...).
+   
 
