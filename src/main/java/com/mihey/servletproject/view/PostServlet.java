@@ -51,7 +51,6 @@ public class PostServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getServletPath();
-        response.getWriter().write(path);
         switch (path) {
             case "/posts/delete":
                 deletePost(request, response);

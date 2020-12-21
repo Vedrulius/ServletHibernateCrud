@@ -28,7 +28,6 @@ public class RegionServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getServletPath();
-        response.getWriter().write(path);
         String json = request.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         Region region = g.fromJson(json, Region.class);
@@ -43,7 +42,6 @@ public class RegionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String path = request.getServletPath();
-        response.getWriter().write(path);
         switch (path) {
             case "/regions/delete":
                 deleteRegion(request, response);

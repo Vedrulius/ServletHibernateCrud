@@ -15,7 +15,7 @@ public class RegionRepositoryImpl implements RegionRepository {
     @Override
     public List<Region> getAll() {
         session = HibernateUtil.getSession();
-        List<Region> list = session.createQuery("FROM Post").list();
+        List<Region> list = session.createQuery("FROM Region").list();
         session.close();
         return list;
     }
@@ -66,8 +66,6 @@ public class RegionRepositoryImpl implements RegionRepository {
 
     private Region findRegion(Region region) {
         session = HibernateUtil.getSession();
-//        Query query = session.createQuery("from Region where name = :name");
-//        query.setParameter("name", region.getName().toLowerCase());
         region = (Region) session.createQuery("from Region where name = :name")
                 .setParameter("name", region.getName().toLowerCase())
                 .uniqueResult();
