@@ -3,7 +3,6 @@ package com.mihey.servletproject.repository.hibernate;
 import com.mihey.servletproject.model.Region;
 import com.mihey.servletproject.repository.RegionRepository;
 import com.mihey.servletproject.util.HibernateUtil;
-import org.hibernate.Query;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -30,16 +29,11 @@ public class RegionRepositoryImpl implements RegionRepository {
 
     @Override
     public Region save(Region region) {
-        Region region1 = findRegion(region);
-        if (region1 == null) {
-            session = HibernateUtil.getSession();
-            session.getTransaction().begin();
-            session.saveOrUpdate(region);
-            session.getTransaction().commit();
-            session.close();
-        } else {
-            return region1;
-        }
+        session = HibernateUtil.getSession();
+        session.getTransaction().begin();
+        session.saveOrUpdate(region);
+        session.getTransaction().commit();
+        session.close();
         return region;
     }
 
@@ -64,12 +58,12 @@ public class RegionRepositoryImpl implements RegionRepository {
         session.close();
     }
 
-    private Region findRegion(Region region) {
-        session = HibernateUtil.getSession();
-        region = (Region) session.createQuery("from Region where name = :name")
-                .setParameter("name", region.getName().toLowerCase())
-                .uniqueResult();
-        session.close();
-        return region;
-    }
+//    private Region findRegion(Region region) {
+//        session = HibernateUtil.getSession();
+//        region = (Region) session.createQuery("from Region where name = :name")
+//                .setParameter("name", region.getName().toLowerCase())
+//                .uniqueResult();
+//        session.close();
+//        return region;
+//    }
 }
