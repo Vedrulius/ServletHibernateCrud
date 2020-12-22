@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/"})
+@WebServlet(urlPatterns = {"/users"})
 public class UserController extends HttpServlet {
 
     private UserRepository userController = new UserRepositoryImpl();
@@ -33,64 +33,47 @@ public class UserController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getServletPath();
         String json = request.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         User user = g.fromJson(json, User.class);
         Region region = regionController.save(user.getRegion());
-        if (path.equals("/users/create")) {
-            user.setRegion(region);
-            user.setRole(Role.USER);
-            userController.save(user);
-        }
-        if (path.equals("/users/update")) {
-            user.setRegion(region);
-            user.setRole(Role.USER);
-            userController.update(user);
-        }
+        user.setRegion(region);
+        user.setRole(Role.USER);
+        userController.save(user);
+
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String json = request.getReader().lines().collect(Collectors.joining());
+        Gson g = new Gson();
+        User user = g.fromJson(json, User.class);
+        Region region = regionController.save(user.getRegion());
+        user.setRegion(region);
+        user.setRole(Role.USER);
+        userController.update(user);
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getServletPath();
-        switch (path) {
-            case "/users/delete":
-                deleteUser(request, response);
-                break;
-            case "/users/list":
-                listUsers(request, response);
-                break;
-            case "/users/find":
-                findUser(request, response);
-                break;
+        if (request.getParameter("id") == null) {
+            List<User> list = userController.getAll();
+            response.getWriter().write(list.toString());
+        } else {
+            int id = Integer.parseInt(request.getParameter("id"));
+            User user = userController.getById(id);
+            response.getWriter().write(user.toString());
         }
     }
 
-    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         int id = Integer.parseInt(request.getParameter("id"));
 
         userController.deleteById(id);
-
     }
-
-    private void listUsers(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        List<User> list = userController.getAll();
-        response.getWriter().write(list.toString());
-
-    }
-
-    private void findUser(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        int id = Integer.parseInt(request.getParameter("id"));
-        User user = userController.getById(id);
-        response.getWriter().write(user.toString());
-    }
-
 
     @Override
     public void destroy() {

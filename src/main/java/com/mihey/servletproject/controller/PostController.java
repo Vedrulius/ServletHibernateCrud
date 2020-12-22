@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/posts/create", "/posts/update", "/posts/delete", "/posts/list", "/posts/find"})
+@WebServlet(urlPatterns = {"/posts"})
 public class PostController extends HttpServlet {
 
     private PostRepository postController = new PostRepositoryImpl();
@@ -28,63 +28,45 @@ public class PostController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getServletPath();
         String json = req.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         Post post = g.fromJson(json, Post.class);
-        if (path.equals("/posts/create")) {
-            post.setCreated(new Timestamp(System.currentTimeMillis()));
-            post.setUpdated(new Timestamp(System.currentTimeMillis()));
-            postController.save(post);
-        }
-        if (path.equals("/posts/update")) {
-            String content = post.getContent();
-            post = postController.getById(post.getId());
-            post.setUpdated(new Timestamp(System.currentTimeMillis()));
-            post.setContent(content);
-            postController.update(post);
+        post.setCreated(new Timestamp(System.currentTimeMillis()));
+        post.setUpdated(new Timestamp(System.currentTimeMillis()));
+        postController.save(post);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String json = req.getReader().lines().collect(Collectors.joining());
+        Gson g = new Gson();
+        Post post = g.fromJson(json, Post.class);
+        String content = post.getContent();
+        post = postController.getById(post.getId());
+        post.setUpdated(new Timestamp(System.currentTimeMillis()));
+        post.setContent(content);
+        postController.update(post);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("id") == null) {
+            List<Post> list = postController.getAll();
+            response.getWriter().write(list.toString());
+        } else {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Post post = postController.getById(id);
+            response.getWriter().write(post.toString());
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String path = request.getServletPath();
-        switch (path) {
-            case "/posts/delete":
-                deletePost(request, response);
-                break;
-            case "/posts/list":
-                listPosts(request, response);
-                break;
-            case "/posts/find":
-                findPost(request, response);
-                break;
-        }
-    }
-
-    private void deletePost(HttpServletRequest request, HttpServletResponse response)
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(request.getParameter("id"));
 
         postController.deleteById(id);
 
-    }
-
-    private void listPosts(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        List<Post> list = postController.getAll();
-        response.getWriter().write(list.toString());
-
-    }
-
-    private void findPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        int id = Integer.parseInt(request.getParameter("id"));
-        Post post = postController.getById(id);
-        response.getWriter().write(post.toString());
     }
 
     @Override
