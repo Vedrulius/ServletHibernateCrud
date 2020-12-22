@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@WebServlet(urlPatterns = {"/regions/create", "/regions/update", "/regions/delete", "/regions/list", "/regions/find"})
+@WebServlet(urlPatterns = {"/regions"})
 public class RegionController extends HttpServlet {
 
     private RegionRepository regionController = new RegionRepositoryImpl();
@@ -28,57 +28,39 @@ public class RegionController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String path = request.getServletPath();
         String json = request.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         Region region = g.fromJson(json, Region.class);
-        if (path.equals("/regions/create")) {
-            regionController.save(region);
-        }
-        if (path.equals("/regions/update")) {
-            regionController.update(region);
-        }
+        regionController.save(region);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String path = request.getServletPath();
-        switch (path) {
-            case "/regions/delete":
-                deleteRegion(request, response);
-                break;
-            case "/regions/list":
-                listRegions(request, response);
-                break;
-            case "/regions/find":
-                findRegion(request, response);
-                break;
-        }
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        String path = request.getServletPath();
+        String json = request.getReader().lines().collect(Collectors.joining());
+        Gson g = new Gson();
+        Region region = g.fromJson(json, Region.class);
+        regionController.update(region);
     }
 
-    private void deleteRegion(HttpServletRequest request, HttpServletResponse response)
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         int id = Integer.parseInt(request.getParameter("id"));
 
         regionController.deleteById(id);
-
     }
 
-    private void listRegions(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
 
-        List<Region> list = regionController.getAll();
-        response.getWriter().write(list.toString());
-
-    }
-
-    private void findRegion(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        int id = Integer.parseInt(request.getParameter("id"));
-        Region region = regionController.getById(id);
-        response.getWriter().write(region.toString());
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("id") == null) {
+            List<Region> list = regionController.getAll();
+            response.getWriter().write(list.toString());
+        } else {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Region region = regionController.getById(id);
+            response.getWriter().write(region.toString());
+        }
     }
 
     @Override
