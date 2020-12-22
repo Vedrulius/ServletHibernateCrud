@@ -114,7 +114,7 @@
                 <version>${tomcat.plugin.version}</version>
                 <configuration>
                     <path>/post-service</path>
-                    <port>8088</port>
+                    <port></port>
                 </configuration>
             </plugin>
         </plugins>
