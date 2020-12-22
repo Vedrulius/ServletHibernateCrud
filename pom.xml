@@ -12,6 +12,7 @@
 
     <properties>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>9.0.41.0</maven-dependency-plugin.version>
         <javax.servlet.api.version>4.0.1</javax.servlet.api.version>
         <tomcat.plugin.version>2.2</tomcat.plugin.version>
         <postgresql.version>42.2.18</postgresql.version>
@@ -89,13 +90,15 @@
                 <executions>
                     <execution>
                         <phase>package</phase>
-                        <goals><goal>copy</goal></goals>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>com.heroku</groupId>
                                     <artifactId>webapp-runner</artifactId>
-                                    <version>9.0.41.0</version>
+                                    <version>${maven-dependency-plugin.version}</version>
                                     <destFileName>webapp-runner.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>
