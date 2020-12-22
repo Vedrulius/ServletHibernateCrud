@@ -58,12 +58,13 @@ public class UserController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("id") == null) {
+        String id = request.getParameter("id");
+        if (id == null) {
             List<User> list = userController.getAll();
             response.getWriter().write(list.toString());
         } else {
-            int id = Integer.parseInt(request.getParameter("id"));
-            User user = userController.getById(id);
+            int userId = Integer.parseInt(id);
+            User user = userController.getById(userId);
             response.getWriter().write(user.toString());
         }
     }

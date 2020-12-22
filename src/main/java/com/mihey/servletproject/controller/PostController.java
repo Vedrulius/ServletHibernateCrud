@@ -50,12 +50,13 @@ public class PostController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter("id") == null) {
+        String id = request.getParameter("id");
+        if (id == null) {
             List<Post> list = postController.getAll();
             response.getWriter().write(list.toString());
         } else {
-            int id = Integer.parseInt(request.getParameter("id"));
-            Post post = postController.getById(id);
+            int postId = Integer.parseInt(id);
+            Post post = postController.getById(postId);
             response.getWriter().write(post.toString());
         }
     }

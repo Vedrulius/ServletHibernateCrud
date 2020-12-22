@@ -53,12 +53,13 @@ public class RegionController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter("id") == null) {
+        String id = request.getParameter("id");
+        if ( id == null) {
             List<Region> list = regionController.getAll();
             response.getWriter().write(list.toString());
         } else {
-            int id = Integer.parseInt(request.getParameter("id"));
-            Region region = regionController.getById(id);
+            int regionId = Integer.parseInt(id);
+            Region region = regionController.getById(regionId);
             response.getWriter().write(region.toString());
         }
     }
