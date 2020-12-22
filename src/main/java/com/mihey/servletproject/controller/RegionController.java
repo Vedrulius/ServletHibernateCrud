@@ -36,7 +36,6 @@ public class RegionController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        String path = request.getServletPath();
         String json = request.getReader().lines().collect(Collectors.joining());
         Gson g = new Gson();
         Region region = g.fromJson(json, Region.class);

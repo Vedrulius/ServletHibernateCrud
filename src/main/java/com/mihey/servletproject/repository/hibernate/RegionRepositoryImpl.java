@@ -58,12 +58,4 @@ public class RegionRepositoryImpl implements RegionRepository {
         session.close();
     }
 
-//    private Region findRegion(Region region) {
-//        session = HibernateUtil.getSession();
-//        region = (Region) session.createQuery("from Region where name = :name")
-//                .setParameter("name", region.getName().toLowerCase())
-//                .uniqueResult();
-//        session.close();
-//        return region;
-//    }
 }
